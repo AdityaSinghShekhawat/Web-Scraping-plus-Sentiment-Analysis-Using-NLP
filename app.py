@@ -6,7 +6,7 @@ import pandas as pd
 string = "Web Scrapping"
 st.set_page_config(page_title=string)
 st.title("Amazon Product Reviews Web Scrapping")
-st.header("Step 1: Go to see all reviews sections of amazon product.")
+st.header("Step 1: Go to see all reviews section of amazon product.")
 video_file = open('Process.mkv', 'rb')
 video_bytes = video_file.read()
 st.video(video_bytes)
