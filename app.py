@@ -12,7 +12,7 @@ video_file = open('Process.mkv', 'rb')
 video_bytes = video_file.read()
 st.video(video_bytes)
 st.header("Enter Amazon Product URL")
-count = 0
+count = 1
 url = st.text_input("")
 url = url.replace("dp", "product-review", 1)
 cust_name = []
