@@ -1,26 +1,22 @@
-from os import write
 import streamlit as st
 import requests  # To fetch the source code of a website.
 from bs4 import BeautifulSoup  # To scrap the data.
 import pandas as pd
-import base64
 
 string = "Web Scrapping"
 st.set_page_config(page_title=string)
 st.title("Amazon Product Reviews Web Scrapping")
-
+st.header("Step 1: Go to see all reviews sections of amazon product.")
 video_file = open('Process.mkv', 'rb')
 video_bytes = video_file.read()
 st.video(video_bytes)
-
+st.header("Step 2: Paste URL.")
 count = 0
 url = st.text_input("Enter Amazon Product URL to Scrap")
-
 cust_name = []
 ratings = []
 cust_reviews = []
 error = []
-
 if url:
     url = url + "&pageNumber="
     my_bar = st.progress(0)
