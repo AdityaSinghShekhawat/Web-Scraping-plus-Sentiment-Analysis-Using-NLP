@@ -2,17 +2,19 @@ import streamlit as st
 import requests  # To fetch the source code of a website.
 from bs4 import BeautifulSoup  # To scrap the data.
 import pandas as pd
+import numpy as np
 
 string = "Web Scrapping"
 st.set_page_config(page_title=string)
 st.title("Amazon Product Reviews Web Scrapping")
-st.header("Step 1: Go to see all reviews.")
+st.header("Working")
 video_file = open('Process.mkv', 'rb')
 video_bytes = video_file.read()
 st.video(video_bytes)
-st.header("Step 2: Paste URL.")
+st.header("Enter Amazon Product URL")
 count = 0
-url = st.text_input("Enter Amazon Product URL to Scrap")
+url = st.text_input("")
+url = url.replace("dp", "product-review", 1)
 cust_name = []
 ratings = []
 cust_reviews = []
@@ -49,4 +51,5 @@ if url:
     df['Customer Name'] = cust_name
     df['Ratings'] = ratings
     df['Reviews'] = cust_reviews
+    df.index = np.arange(1, len(df)+1)
     st.write(df)
