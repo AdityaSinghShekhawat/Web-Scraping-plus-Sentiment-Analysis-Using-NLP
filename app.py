@@ -3,7 +3,7 @@ import requests  # To fetch the source code of a website.
 from bs4 import BeautifulSoup  # To scrap the data.
 import pandas as pd
 import numpy as np
-
+import time
 string = "Web Scrapping"
 st.set_page_config(page_title=string)
 st.title("Amazon Product Reviews Web Scrapping")
