@@ -21,8 +21,8 @@ cust_reviews = []
 error = []
 if url:
     url = url + "&pageNumber="
-    my_bar = st.progress(0)
     with st.spinner('Fetching data...'):
+        my_bar = st.progress(0)
         for i in range(1, 201):
             my_bar.progress(i/200)
             new_url = url + str(i)
@@ -43,6 +43,8 @@ if url:
                 else:
                     count += 1
                     my_bar.progress(1.0)
+                    st.balloons()
+                    my_bar.empty()
                     break
             else:
                 error.append(i)
