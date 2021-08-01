@@ -16,7 +16,9 @@ count = 1
 url = st.text_input("")
 url = url.replace("dp", "product-review", 1)
 cust_name = []
+review_dates = []
 ratings = []
+review_title = []
 cust_reviews = []
 error = []
 if url:
@@ -30,12 +32,17 @@ if url:
             if str(page) == "<Response [200]>":
                 soup = BeautifulSoup(page.content, 'html.parser')
                 names = soup.select('span.a-profile-name')[2:]
+                dates = soup.select('span.review-date')[2:]
                 stars = soup.select("a.a-link-normal i span.a-icon-alt")
+                titles = soup.select("a.review-title-content span")
                 reviews = soup.select('span.review-text-content span')
                 for j in range(len(names)):
                     if (len(names) == len(stars)) and (len(stars) == len(reviews)):
                         cust_name.append(names[j].get_text())
+                        review_dates.append(dates[j].get_text().replace(
+                            "Reviewed in India on ", ""))
                         ratings.append(stars[j].get_text())
+                        review_title.append(titles[j].get_text())
                         cust_reviews.append(
                             reviews[j].get_text().strip("\n  "))
                 if names != []:
@@ -43,7 +50,6 @@ if url:
                 else:
                     count += 1
                     my_bar.progress(1.0)
-                    st.balloons()
                     my_bar.empty()
                     break
             else:
@@ -51,7 +57,9 @@ if url:
     st.success('Done!')
     df = pd.DataFrame()
     df['Customer Name'] = cust_name
+    df['Date'] = review_dates
     df['Ratings'] = ratings
+    df['Title'] = review_title
     df['Reviews'] = cust_reviews
     df.index = np.arange(1, len(df)+1)
     st.write(df)
