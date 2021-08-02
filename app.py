@@ -31,18 +31,29 @@ if url:
             page = requests.get(new_url)
             if str(page) == "<Response [200]>":
                 soup = BeautifulSoup(page.content, 'html.parser')
-                names = soup.select('span.a-profile-name')[2:]
-                dates = soup.select('span.review-date')[2:]
+                names = soup.select('span.a-profile-name')
+                dates = soup.select('span.review-date')
                 stars = soup.select("a.a-link-normal i span.a-icon-alt")
                 titles = soup.select("a.review-title-content span")
                 reviews = soup.select('span.review-text-content span')
+                if (len(names) != len(stars)):
+                    names = names[2:]
+                    dates = dates[2:]
+                while (len(names) != len(reviews)):
+                    if(len(names) > len(reviews)):
+                        reviews.append("None")
+                    else:
+                        reviews.pop()
                 for j in range(len(names)):
-                    if (len(names) == len(stars)) and (len(stars) == len(reviews)):
-                        cust_name.append(names[j].get_text())
-                        review_dates.append(dates[j].get_text().replace(
-                            "Reviewed in India on ", ""))
-                        ratings.append(stars[j].get_text())
-                        review_title.append(titles[j].get_text())
+                    cust_name.append(names[j].get_text())
+                    review_dates.append(dates[j].get_text().replace(
+                        "Reviewed in India on ", ""))
+                    ratings.append(stars[j].get_text())
+                    review_title.append(titles[j].get_text())
+                    stringcheck = 'Hello Stack!'
+                    if (isinstance(reviews[j], str)):
+                        cust_reviews.append(reviews[j])
+                    else:
                         cust_reviews.append(
                             reviews[j].get_text().strip("\n  "))
                 if names != []:
