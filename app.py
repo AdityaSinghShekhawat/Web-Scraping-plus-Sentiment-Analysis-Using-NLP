@@ -1,32 +1,51 @@
+# Importing libraries.
 import streamlit as st
 import requests  # To fetch the source code of a website.
 from bs4 import BeautifulSoup  # To scrap the data.
 import pandas as pd
 import numpy as np
 
-string = "Web Scrapping"
-st.set_page_config(page_title=string)
-st.title("Amazon Product Reviews Web Scrapping")
-st.header("Working")
-video_file = open('Process.mkv', 'rb')
-video_bytes = video_file.read()
-st.video(video_bytes)
-st.header("Enter Amazon Product URL")
-count = 1
-url = st.text_input("")
-url = url.replace("dp", "product-review", 1)
-cust_name = []
-review_dates = []
-ratings = []
-review_title = []
-cust_reviews = []
-error = []
-if url:
-    url = url + "&pageNumber="
+
+# Webpage title.
+def webpage():
+    st.set_page_config(page_title="Amazon product scrap")
+    st.title("Amazon Product Reviews Web Scrapping")
+
+
+# Contains video.
+def video_section():
+    st.header("Working")
+    video_file = open('Process.mkv', 'rb')
+    video_bytes = video_file.read()
+    st.video(video_bytes)
+
+
+# Return URL.
+def url_section():
+    st.header("Enter Amazon Product URL")
+    url = st.text_input("")
+    if ('/gp/' in url):
+        url = url.replace("/gp/", "/product-review/", 1)
+        url = url + "&pageNumber="
+    elif ('/dp/' in url):
+        url = url.replace("/dp/", "/product-review/", 1)
+        url = url + "&pageNumber="
+    return url
+
+
+# Scrap URL.
+def scrapping(url):
+    cust_name = []
+    review_dates = []
+    ratings = []
+    review_title = []
+    cust_reviews = []
+    error = []
+    count = 1
     with st.spinner('Fetching data...'):
         my_bar = st.progress(0)
-        for i in range(1, 201):
-            my_bar.progress(i/200)
+        for i in range(1, 101):
+            my_bar.progress(i/100)
             new_url = url + str(i)
             page = requests.get(new_url)
             if str(page) == "<Response [200]>":
@@ -64,8 +83,16 @@ if url:
                     my_bar.empty()
                     break
             else:
+                st.error(
+                    "Page either not compatible or does not exist. Please watch above video.")
                 error.append(i)
+                break
     st.success('Done!')
+    return cust_name, review_dates, ratings, review_title, cust_reviews, error
+
+
+# Printing scrapped data.
+def dataframe(cust_name, review_dates, ratings, review_title, cust_reviews, error):
     df = pd.DataFrame()
     df['Customer Name'] = cust_name
     df['Date'] = review_dates
@@ -74,3 +101,14 @@ if url:
     df['Reviews'] = cust_reviews
     df.index = np.arange(1, len(df)+1)
     st.write(df)
+
+
+if __name__ == "__main__":
+    webpage()
+    video_section()
+    url = url_section()
+    if url:
+        cust_name, review_dates, ratings, review_title, cust_reviews, error = scrapping(
+            url)
+        dataframe(cust_name, review_dates, ratings,
+                  review_title, cust_reviews, error)
