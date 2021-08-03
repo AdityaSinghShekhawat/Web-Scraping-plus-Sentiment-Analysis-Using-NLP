@@ -100,7 +100,10 @@ def dataframe(cust_name, review_dates, ratings, review_title, cust_reviews, erro
     df['Title'] = review_title
     df['Reviews'] = cust_reviews
     df.index = np.arange(1, len(df)+1)
-    st.write(df)
+    if df.empty:
+        st.markdown("Sorry no reviews present for this product. Try for different product.:expressionless:")
+    else:
+        st.write(df)
 
 
 if __name__ == "__main__":
