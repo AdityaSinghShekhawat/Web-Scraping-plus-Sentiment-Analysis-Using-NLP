@@ -1,5 +1,7 @@
+nltk
 streamlit
 requests
 bs4
 pandas
 numpy
+emoji
