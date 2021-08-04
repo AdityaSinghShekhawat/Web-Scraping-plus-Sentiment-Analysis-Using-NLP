@@ -1,12 +1,18 @@
 # Importing libraries.
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import streamlit as st
 import requests  # To fetch the source code of a website.
 from bs4 import BeautifulSoup  # To scrap the data.
 import pandas as pd
 import numpy as np
-
+import nltk
+import emoji
+nltk.download("vader_lexicon")
+sia = SentimentIntensityAnalyzer()
 
 # Webpage title.
+
+
 def webpage():
     st.set_page_config(page_title="Amazon product scrap")
     st.title("Amazon Product Reviews Web Scrapping")
@@ -91,7 +97,7 @@ def scrapping(url):
     return cust_name, review_dates, ratings, review_title, cust_reviews, error
 
 
-# Printing scrapped data.
+# Adding scrapped data in dataframe.
 def dataframe(cust_name, review_dates, ratings, review_title, cust_reviews, error):
     df = pd.DataFrame()
     df['Customer Name'] = cust_name
@@ -99,11 +105,33 @@ def dataframe(cust_name, review_dates, ratings, review_title, cust_reviews, erro
     df['Ratings'] = ratings
     df['Title'] = review_title
     df['Reviews'] = cust_reviews
-    df.index = np.arange(1, len(df)+1)
-    if df.empty:
-        st.markdown("Sorry no reviews present for this product. Try for different product.:expressionless:")
-    else:
-        st.write(df)
+    # df.index = np.arange(1, len(df)+1)
+    return df
+
+
+# Adding 'sentiment_score' column according to 'Reviews' column.
+def addSentiment(df):
+    compound = list()
+    sentiment = list()
+    total_rows = df['Customer Name'].count()
+    for i in range(total_rows):
+        review = df.iloc[i]['Reviews']
+        score = sia.polarity_scores(review)
+        compound.append(score['compound'])
+
+        if ((score['compound'] >= -1) and (score['compound'] < -0.6)):
+            sentiment.append(emoji.emojize(":angry:", use_aliases=True))
+        elif ((score['compound'] >= -0.6) and (score['compound'] < -0.2)):
+            sentiment.append(emoji.emojize(":worried:", use_aliases=True))
+        elif ((score['compound'] >= -0.2) and (score['compound'] < 0.2)):
+            sentiment.append(emoji.emojize(":neutral_face:", use_aliases=True))
+        elif ((score['compound'] >= 0.2) and (score['compound'] < 0.6)):
+            sentiment.append(emoji.emojize(":blush:", use_aliases=True))
+        elif ((score['compound'] >= 0.6) and (score['compound'] <= 1)):
+            sentiment.append(emoji.emojize(":smile:", use_aliases=True))
+    df['Score'] = compound
+    df['Sentiment'] = sentiment
+    return df
 
 
 if __name__ == "__main__":
@@ -113,5 +141,28 @@ if __name__ == "__main__":
     if url:
         cust_name, review_dates, ratings, review_title, cust_reviews, error = scrapping(
             url)
-        dataframe(cust_name, review_dates, ratings,
-                  review_title, cust_reviews, error)
+        df = dataframe(cust_name, review_dates, ratings,
+                       review_title, cust_reviews, error)
+        if df.empty:
+            st.markdown(
+                "Sorry no reviews present for this product. Try for different product.:expressionless:")
+        else:
+            score_df = addSentiment(df)
+            st.write(score_df[['Customer Name', 'Date',
+                     'Ratings', 'Title', 'Reviews', 'Sentiment']])
+            score_mean = score_df['Score'].mean()
+            if ((score_mean >= -1) and (score_mean < -0.6)):
+                st.write("Overall Sentiment: " +
+                         str(round((score_mean+1)*2+1, 2))+"/5 :angry:.")
+            elif ((score_mean >= -0.6) and (score_mean < -0.2)):
+                st.write("Overall Sentiment: " +
+                         str(round((score_mean+1)*2+1, 2))+"/5 :worried:.")
+            elif ((score_mean >= -0.2) and (score_mean < 0.2)):
+                st.write("Overall Sentiment: " +
+                         str(round((score_mean+1)*2+1, 2))+"/5 :neutral_face:.")
+            elif ((score_mean >= 0.2) and (score_mean < 0.6)):
+                st.write("Overall Sentiment: " +
+                         str(round((score_mean+1)*2+1, 2))+"/5 :blush:.")
+            elif ((score_mean >= 0.6) and (score_mean <= 1)):
+                st.write("Overall Sentiment: " +
+                         str(round((score_mean+1)*2+1, 2))+"/5 :smile:.")
