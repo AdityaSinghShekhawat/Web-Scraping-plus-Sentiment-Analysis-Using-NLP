@@ -105,7 +105,6 @@ def dataframe(cust_name, review_dates, ratings, review_title, cust_reviews, erro
     df['Ratings'] = ratings
     df['Title'] = review_title
     df['Reviews'] = cust_reviews
-    # df.index = np.arange(1, len(df)+1)
     return df
 
 
@@ -148,6 +147,7 @@ if __name__ == "__main__":
                 "Sorry no reviews present for this product. Try for different product.:expressionless:")
         else:
             score_df = addSentiment(df)
+            score_df.index = np.arange(1, len(score_df)+1)
             st.write(score_df[['Customer Name', 'Date',
                      'Ratings', 'Title', 'Reviews', 'Sentiment']])
             score_mean = score_df['Score'].mean()
