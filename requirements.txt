@@ -1,3 +1,4 @@
+time
 nltk
 streamlit
 requests
