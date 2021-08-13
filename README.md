@@ -1,7 +1,7 @@
 # Motivation:-
-In today’s retail marketing world, there are so many new products are emerging every day. Therefore, customers need to rely largely on product reviews to make up their minds for better decision making on purchase. However, searching and comparing text reviews can be frustrating for users. Hence we need better numerical ratings system based on the reviews which will make customers purchase decision with ease.
+In today’s retail marketing world, there are so many new products are emerging every day. Therefore, customers need to rely largely on product reviews to make up their minds for better decision-making on purchase. However, searching and comparing text reviews can be frustrating for users. Hence, we need better numerical ratings system based on the reviews which will make customers purchase decision with ease.
 
-So, I have made a website which scrape reviews of products from amazon and run sentiment analysis on them, thus ranking them based on customer happiness and comparing against the actual ratings.
+So, I have made a website which scrape reviews of products from Amazon and run sentiment analysis on them, thus ranking them based on customer happiness and comparing against the actual ratings.
 
 # Technologies:-
 ## 1) Web Hosting:-
@@ -24,18 +24,17 @@ So, I have made a website which scrape reviews of products from amazon and run s
 * streamlit == 0.86.0
 
 # Working:-
-1. Take whole html page with the help of "request" library.
-2. Take neccesary data from URL like Customer name, Date, Ratings, Title, Reviews.
+1. Take whole HTML page with the help of "request" library.
+2. Take necessary data from URL like Customer name, Date, Ratings, Title, Reviews.
 3. Evaluate sentiment of each review using "vader_lexicon" present in "nltk" library.
-4. Take mean of all sentiments and evaluate "Overall Sentiment" of product.
+4. Take the mean of all sentiments and evaluate "Overall Sentiment" of the product.
 
 # Limitations:-
 1. It only selects maximum of first 1000 reviews as increasing number of reviews also increases computation time.
-2. Some types of amazon url are not supported.
-3. Sentiment recognition is done using Vader lexicon which has accuracy 72%.
+2. Some types of Amazon URL are not supported.
+3. Sentiment recognition is done using Vader lexicon, which has accuracy 72%.
 
 # Future Work:-
-1. Add support of all type of amazon url.
-1. Give a print option so that user can print whole data frame.
-2. Add spam report.
-
+1. Add support to all type of Amazon URL.
+2. Give a print option so that user can print whole data frame.
+3. Add spam report.
