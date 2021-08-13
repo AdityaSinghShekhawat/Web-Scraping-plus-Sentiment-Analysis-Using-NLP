@@ -31,10 +31,11 @@ So, I have made a website which scrape reviews of products from amazon and run s
 
 # Limitations:-
 1. It only selects maximum of first 1000 reviews as increasing number of reviews also increases computation time.
-2. Some types of url are not supported.
+2. Some types of amazon url are not supported.
 3. Sentiment recognition is done using Vader lexicon which has accuracy 72%.
 
 # Future Work:-
+1. Add support of all type of amazon url.
 1. Give a print option so that user can print whole data frame.
 2. Add spam report.
 
