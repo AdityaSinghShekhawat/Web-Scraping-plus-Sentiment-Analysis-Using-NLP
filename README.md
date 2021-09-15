@@ -1,5 +1,5 @@
 # Motivation:-
-In today’s retail marketing world, there are so many new products are emerging every day. Therefore, customers need to rely largely on product reviews to make up their minds for better decision-making on purchase. However, searching and comparing text reviews can be frustrating for users. Hence, we need better numerical ratings system based on the reviews which will make customers purchase decision with ease.
+As customers, we need to rely largely on product reviews to make up our minds for better purchasing decisions. However, ratings on products are not standardized. That is, they do not take the emotion of customers into account. Hence there can be a huge difference between what the customer wrote and its rating of the product.
 
 So, I have made a website which scrape reviews of products from Amazon and run sentiment analysis on them, thus ranking them based on customer happiness and comparing against the actual ratings.
 
