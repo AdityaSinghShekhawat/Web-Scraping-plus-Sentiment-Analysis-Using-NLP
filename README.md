@@ -32,7 +32,7 @@ So, I have made a website which scrape reviews of products from Amazon and run s
 # Limitations:-
 1. It only selects maximum of first 1000 reviews as increasing number of reviews also increases computation time.
 2. Some types of Amazon URL are not supported.
-3. Sentiment recognition is done using Vader lexicon, which has accuracy 72%.
+3. Sentiment recognition is done using Vader lexicon, which has accuracy 82.8%.
 
 # Future Work:-
 1. Add support to all type of Amazon URL.
